@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from sqlalchemy import create_engine
+import psycopg2
 
 # Database connection details
 db_user = 'postgres'
@@ -28,13 +29,15 @@ def main():
     st.title("Bus Details")
 
     # Load data from PostgreSQL
+    st.write("Loading data from PostgreSQL...")
     df = get_data_from_postgres()
+    st.write("Data loaded successfully.")
 
     if df is not None and not df.empty:
         st.write("Current List", df)
 
         # Print the columns to debug
-        #st.write("Columns in DataFrame:", df.columns.tolist())
+        st.write("Columns in DataFrame:", df.columns.tolist())
 
         # Filter options
         st.sidebar.header("Filter Options")
