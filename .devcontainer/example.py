@@ -31,9 +31,8 @@ def main():
     # Load data from PostgreSQL
     st.write("Loading data from PostgreSQL...")
     df = get_data_from_postgres()
-    st.write("Data loaded successfully.")
-
-    if df is not None and not df.empty:
+    if df is not None:
+        st.write("Data loaded successfully.")
         st.write("Current List", df)
 
         # Print the columns to debug
