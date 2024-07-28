@@ -1,11 +1,10 @@
 import streamlit as st
 import pandas as pd
 from sqlalchemy import create_engine
-import psycopg2
 
 # Database connection details
 db_user = 'postgres'
-db_password = 'sivan23'  
+db_password = 'sivan23'  # Replace with your actual password
 db_host = 'localhost'
 db_port = '5432'
 db_name = 'bus_details'
