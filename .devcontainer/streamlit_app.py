@@ -1,8 +1,7 @@
 import streamlit as st
 import pandas as pd
 from sqlalchemy import create_engine
-import psycopg2
-from psycopg2 import sql
+from sqlalchemy.exc import SQLAlchemyError
 
 # Database connection details
 db_user = 'postgres'
@@ -16,16 +15,21 @@ connection_string = f'postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{d
 
 # Function to get data from PostgreSQL
 def get_data_from_postgres():
-    engine = create_engine(connection_string)
-    query = "SELECT * FROM bus_data"
-    df = pd.read_sql(query, engine)
-    return df
+    try:
+        engine = create_engine(connection_string)
+        query = "SELECT * FROM bus_data"
+        df = pd.read_sql(query, engine)
+        return df
+    except SQLAlchemyError as e:
+        st.error(f"Error fetching data: {e}")
+        return None
 
 # Streamlit application
 def main():
     st.title("Bus Details")
 
     # Load data from PostgreSQL
+    st.write("Loading data from PostgreSQL...")
     df = get_data_from_postgres()
 
     if df is not None and not df.empty:
@@ -41,7 +45,7 @@ def main():
         if selected_route_name != "All":
             df = df[df['route_name'] == selected_route_name]
 
-        # Filter by bus type (correct column name is 'bustype')
+        # Filter by bus type
         unique_bus_types = df['bustype'].unique()
         selected_bus_type = st.sidebar.selectbox("Bus Type", ["All"] + list(unique_bus_types))
         
