@@ -8,9 +8,11 @@ db_password = 'sivan23'  # Replace with your actual password
 db_host = 'localhost'
 db_port = '5432'
 db_name = 'bus_details'
+db_timeout = '10'
+db_sslmode = 'prefer'
 
 # Create a connection string for SQLAlchemy
-connection_string = f'postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
+connection_string = f'postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}/{db_timeout}/{db_sslmode}'
 
 # Function to get data from PostgreSQL
 def get_data_from_postgres():
