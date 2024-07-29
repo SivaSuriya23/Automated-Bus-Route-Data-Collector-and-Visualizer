@@ -1,12 +1,13 @@
+# Streamlit application code
+
+
 import streamlit as st
 import pandas as pd
 from sqlalchemy import create_engine
-import psycopg2
-from psycopg2 import sql
 
 # Database connection details
 db_user = 'postgres'
-db_password = 'password'
+db_password = 'sivan23'
 db_host = 'localhost'
 db_port = '5432'
 db_name = 'bus_details'
@@ -16,10 +17,14 @@ connection_string = f'postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{d
 
 # Function to get data from PostgreSQL
 def get_data_from_postgres():
-    engine = create_engine(connection_string)
-    query = "SELECT * FROM bus_data"
-    df = pd.read_sql(query, engine)
-    return df
+    try:
+        engine = create_engine(connection_string)
+        query = "SELECT * FROM bus_data"
+        df = pd.read_sql(query, engine)
+        return df
+    except Exception as e:
+        st.error(f"Error fetching data: {e}")
+        return None
 
 # Streamlit application
 def main():
@@ -31,22 +36,31 @@ def main():
     if df is not None and not df.empty:
         st.write("Current List", df)
 
+        # Print the columns to debug
+        #st.write("Columns in DataFrame:", df.columns.tolist())
+
         # Filter options
         st.sidebar.header("Filter Options")
 
         # Filter by route name
-        unique_route_names = df['route_name'].unique()
-        selected_route_name = st.sidebar.selectbox("Route Name", ["All"] + list(unique_route_names))
-        
-        if selected_route_name != "All":
-            df = df[df['route_name'] == selected_route_name]
+        if 'route_name' in df.columns:
+            unique_route_names = df['route_name'].unique()
+            selected_route_name = st.sidebar.selectbox("Route Name", ["All"] + list(unique_route_names))
+            
+            if selected_route_name != "All":
+                df = df[df['route_name'] == selected_route_name]
+        else:
+            st.warning("Route name data is not available.")
 
         # Filter by bus type (correct column name is 'bustype')
-        unique_bus_types = df['bustype'].unique()
-        selected_bus_type = st.sidebar.selectbox("Bus Type", ["All"] + list(unique_bus_types))
-        
-        if selected_bus_type != "All":
-            df = df[df['bustype'] == selected_bus_type]
+        if 'bus_type' in df.columns:
+            unique_bus_types = df['bus_type'].unique()
+            selected_bus_type = st.sidebar.selectbox("Bus Type", ["All"] + list(unique_bus_types))
+            
+            if selected_bus_type != "All":
+                df = df[df['bus_type'] == selected_bus_type]
+        else:
+            st.warning("Bus type data is not available.")
 
         # Filter by star rating
         if 'star_rating' in df.columns:
