@@ -25,7 +25,7 @@ MIT License. See LICENSE for details.
 
 Selenium, Pandas, SQLAlchemy, Streamlit for their respective functionalities.
 
-Acknowledgements
+# Acknowledgements
 Selenium: For automating web browser interaction.
 Pandas: For data manipulation and analysis.
 SQLAlchemy: For database interaction.
