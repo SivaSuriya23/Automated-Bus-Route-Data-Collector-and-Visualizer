@@ -14,8 +14,8 @@ Below is a screenshot of the Streamlit application.
 - **Data Visualization**: Displays and filters data using a Streamlit web app.
 
 ## Usage
-1. **Scrape Data**: Execute the data scraping script to gather and store bus information.
-2. **View Data**: Run the Streamlit app to filter and explore the bus details.
+1. **Scrape Data**: Execute the 'Data Scraping code' script to gather and store bus information.
+2. **View Data**: Execute the 'Streamlit code' script that will run the Streamlit app to filter and explore the bus details.
 
 All files are stored in the `.devcontainer` folder in this repository.
 
