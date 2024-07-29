@@ -28,14 +28,13 @@ def main():
     st.title("Bus Details")
 
     # Load data from PostgreSQL
-    st.write("Loading data from PostgreSQL...")
     df = get_data_from_postgres()
-    if df is not None:
-        st.write("Data loaded successfully.")
+
+    if df is not None and not df.empty:
         st.write("Current List", df)
 
         # Print the columns to debug
-        st.write("Columns in DataFrame:", df.columns.tolist())
+        #st.write("Columns in DataFrame:", df.columns.tolist())
 
         # Filter options
         st.sidebar.header("Filter Options")
@@ -50,13 +49,13 @@ def main():
         else:
             st.warning("Route name data is not available.")
 
-        # Filter by bus type
-        if 'bustype' in df.columns:
-            unique_bus_types = df['bustype'].unique()
+        # Filter by bus type (correct column name is 'bustype')
+        if 'bus_type' in df.columns:
+            unique_bus_types = df['bus_type'].unique()
             selected_bus_type = st.sidebar.selectbox("Bus Type", ["All"] + list(unique_bus_types))
             
             if selected_bus_type != "All":
-                df = df[df['bustype'] == selected_bus_type]
+                df = df[df['bus_type'] == selected_bus_type]
         else:
             st.warning("Bus type data is not available.")
 
@@ -74,20 +73,17 @@ def main():
 
         # Filter by price
         if 'price' in df.columns:
-            try:
-                # Clean and convert price data
-                df['price'] = df['price'].replace('[\₹,]', '', regex=True)
-                df['price'] = pd.to_numeric(df['price'], errors='coerce')  # Convert to numeric, set errors to 'coerce'
-                df = df.dropna(subset=['price'])  # Drop rows where price is NaN
-                
-                # Create dropdown options for price ranges
-                price_options = sorted(df['price'].unique())
-                selected_price = st.sidebar.selectbox("Price", ["All"] + price_options)
-                
-                if selected_price != "All":
-                    df = df[df['price'] == selected_price]
-            except Exception as e:
-                st.warning(f"Price data processing error: {e}")
+            # Clean and convert price data
+            df['price'] = df['price'].replace('[\₹,]', '', regex=True)
+            df['price'] = pd.to_numeric(df['price'], errors='coerce')  # Convert to numeric, set errors to 'coerce'
+            df = df.dropna(subset=['price'])  # Drop rows where price is NaN
+            
+            # Create dropdown options for price ranges
+            price_options = sorted(df['price'].unique())
+            selected_price = st.sidebar.selectbox("Price", ["All"] + price_options)
+            
+            if selected_price != "All":
+                df = df[df['price'] == selected_price]
         else:
             st.warning("Price data is not available.")
 
