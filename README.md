@@ -4,6 +4,10 @@ Bus Details Scraper and Dashboard
 Overview
 This project consists of a data scraping script to collect bus details from multiple websites, a PostgreSQL database for storing the scraped data, and a Streamlit application to visualize and filter the bus data.
 
+
+![Streamlit Application Screenshot](https://github.com/user-attachments/assets/4ebc6d5f-1ebe-42c2-9c27-7dfe6e6d430b)
+
+
 Features
 Web Scraping: Automatically scrapes bus route information and bus details from specified websites.
 Data Storage: Stores the scraped data into a PostgreSQL database.
