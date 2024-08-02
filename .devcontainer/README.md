@@ -11,5 +11,5 @@
 2. Run the app
 
    ```
-   $ streamlit run Streamlit_code.py
+   $ streamlit run Streamlit code.py
    ```
